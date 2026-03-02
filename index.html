@@ -85,11 +85,11 @@
                                         
                                         <!-- Dynamische CSS-Klassen für das grüne/rote Validierungs-Feedback. -->
                                         <label for="plz" class="form-label">Postleitzahl</label>
-                                        <input type="text" class="form-control" id="plz" v-model.trim="plz" placeholder="z.B. 12345" required
+                                        <input type="text" class="form-control" id="plz" v-model.trim="plz" placeholder="z.B. 12345" required maxlength="5"
                                                :class="{'is-valid': istPlzGueltig === true, 'is-invalid': istPlzGueltig === false}">
 
                                         <div class="invalid-feedback">
-                                            Fehler: Das Sammelfahrzeug fährt nur in Gebiete, die mit "12" beginnen.
+                                            Fehler: Die Postleitzahl muss aus genau 5 Ziffern bestehen und mit "12" beginnen.
                                         </div>
                                     </div>
 
@@ -176,12 +176,14 @@
 
             /**
              * 2. Berechnete Eigenschaften (Computed Properties).
-             * Prüft, ob die eingegebene PLZ (this.plz) mit "12" beginnt.
+             * Prüft, ob die eingegebene PLZ (this.plz) mit "12" beginnt, wenn genau 5 Zahlen eingegeben wurden. 
              */
             computed: {
                 istPlzGueltig() {
-                    // Verhindert rotes Validierungs-Feedback, solange das Feld noch leer ist.
-                    if (this.plz === '') return null; 
+                    // Verhindert rotes Feedback, solange nicht exakt 5 Zeichen eingegeben wurden.
+                    if (this.plz.length !== 5) return null; 
+                    // Prüft, ob Buchstaben eingetippt wurden.
+                    if (isNaN(this.plz)) return false;
                     return this.plz.startsWith('12');
                 }
             }, 
