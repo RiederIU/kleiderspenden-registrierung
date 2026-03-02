@@ -1,18 +1,17 @@
 # Kleiderspenden-Registrierung
 
-Eine responsive Webanwendung (Single-Page-Application) zur Erfassung von Kleiderspenden für den fiktiven Kleiderspenden e.V.
+Eine responsive Webanwendung (Single-Page-Application) zur Erfassung von Kleiderspenden. Entwickelt für die Fallstudie des fiktiven Kleiderspenden e.V.
 
-## Features
-* **Dynamisches Formular:** Auswahl zwischen persönlicher Übergabe und Abholung.
-* **Intelligente Validierung:** Das Formular prüft in Echtzeit, ob die Postleitzahl für das Sammelfahrzeug gültig ist (Beginn mit "12").
-* **Barrierefreiheit (a11y):** Screenreader-optimierte Bestätigungsansicht für maximale Zugänglichkeit.
-* **Responsive Design:** Perfekt optimiert für Smartphones, Tablets (inkl. iPad Pro) und Desktop-Monitore dank Flexbox und Sticky-Footer.
+## Umgesetzte Funktionen
+* **Formular:** Erfassung von Spendenart, Krisengebiet und Übergabeart (persönliche Übergabe oder Abholung).
+* **Validierung:** Das Formular prüft bei der Eingabe automatisch, ob die Postleitzahl für das Sammelfahrzeug im gültigen Bereich liegt (Beginn mit "12").
+* **Barrierefreiheit:** Screenreader-Unterstützung bei der Bestätigungsansicht für eine bessere Zugänglichkeit.
+* **Responsive Design:** Die Benutzeroberfläche passt sich mithilfe von CSS-Flexbox automatisch an Smartphones, Tablets und Desktop-Monitore an. Ein "Sticky Footer" sorgt für ein sauberes Layout bei kurzen Inhalten.
 
-## Technologien
+## Verwendete Technologien
 * HTML5 / CSS3
-* Vue.js 3 (via CDN)
-* Bootstrap 5 (via CDN)
+* Vue.js 3 (via CDN eingebunden)
+* Bootstrap 5 (via CDN eingebunden)
 
-## Wie startet man das Projekt?
-Das Projekt kommt ohne komplexes Backend oder Build-Tools aus. 
-Lade einfach die `index.html` herunter (oder klone das Repository) und öffne die Datei in einem beliebigen, modernen Webbrowser.
+## Ausführung des Projekts
+Um die Anwendung zu starten, laden Sie die Datei `index.html` herunter und öffnen Sie diese in einem aktuellen Webbrowser (z. B. Chrome, Firefox oder Edge). Es ist keine weitere Installation notwendig.
