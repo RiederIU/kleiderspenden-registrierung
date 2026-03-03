@@ -1,5 +1,5 @@
 # Kleiderspenden-Registrierung
-Eine responsive Webanwendung (Single-Page-Application) zur Erfassung von Kleiderspenden.
+Eine responsive Webanwendung (Single-Page-Application) zur Erfassung von Kleiderspenden.<br>
 Entwickelt für die Fallstudie des fiktiven Kleiderspenden e.V.
 
 ## Umgesetzte Funktionen
@@ -15,5 +15,5 @@ Entwickelt für die Fallstudie des fiktiven Kleiderspenden e.V.
 * Bootstrap 5 (via CDN eingebunden)
 
 ## Ausführung des Projekts
-Um die Anwendung zu starten, laden Sie die Dateien dieses Repositories (`index.html` und `logo.png`) herunter und **speichern Sie zwingend beide Dateien im selben Ordner**.
+Um die Anwendung zu starten, laden Sie die Dateien dieses Repositories (`index.html` und `logo.png`) herunter und **speichern Sie zwingend beide Dateien im selben Ordner**.<br>
 Öffnen Sie anschließend die `index.html` in einem aktuellen Webbrowser (z. B. Chrome, Firefox oder Edge). Es ist keine weitere Installation notwendig.
