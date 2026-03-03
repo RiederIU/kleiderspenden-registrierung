@@ -11,7 +11,8 @@
 
     <style>
         /* Hover-Effekt für die Eingabefelder. */
-        .form-control:hover, .form-select:hover {
+        .form-control:hover,
+        .form-select:hover {
             border-color: #0d6efd;
             box-shadow: 0 0 8px rgba(13, 110, 253, 0.25);
             transition: all 0.3s ease-in-out;
@@ -23,47 +24,75 @@
 
     <!-- Layout-Basis (Flexbox): Sicherstellung, dass die App-Ansicht immer die volle Bildschirmhöhe nutzt. -->
     <div id="app" class="d-flex flex-column min-vh-100">
-        <header class="p-3 bg-white border-bottom shadow-sm">
-            <div class="container">
-                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                    <a href="#" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none me-4">
-                        <span class="fs-4">👕 Kleiderspenden e.V.</span>
-                    </a>
-                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="#" class="nav-link px-2 link-secondary">Startseite</a></li>
-                        <li><a href="#" class="nav-link px-2 link-dark">Spende registrieren</a></li>
+
+        <!-- Header mit globaler Navigation und Logo -->
+        <header class="bg-white border-bottom shadow-sm">
+            <nav class="navbar navbar-expand-md navbar-light container py-3">
+
+                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                    <img src="logo.png" alt="Kleiderspenden Logo" width="120" height="100" class="me-3 rounded">
+                    <span class="fs-4 fw-semibold text-dark">Kleiderspenden e.V.</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#globaleNavigation" aria-controls="globaleNavigation" aria-expanded="false"
+                    aria-label="Navigation umschalten">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="globaleNavigation">
+                    <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Startseite</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Spende registrieren</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Über uns</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Kontakt</a>
+                        </li>
                     </ul>
                 </div>
-            </div>
+
+            </nav>
         </header>
 
-       <!-- Dynamischer Platzhalter: Dehnt sich aus, um den Footer bei wenig Inhalt nach unten zu schieben. -->
+        <!-- Dynamischer Platzhalter: Dehnt sich aus, um den Footer bei wenig Inhalt nach unten zu schieben. -->
         <main class="container my-5 flex-grow-1">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-10 col-xl-8">
                     <div class="card shadow-sm">
                         <div class="card-body p-4">
 
+                            <!-- Single-Page-Application (SPA) -->
                             <!-- Bedingtes Rendering: Zeigt das Formular an, solange es nicht abgesendet wurde. -->
                             <div v-if="!formularGesendet">
                                 <h2 class="card-title text-center mb-4">Registriere deine Spende</h2>
                                 <!-- Event-Handling: .prevent verhindert, dass die Seite beim Absenden neu lädt. -->
                                 <form @submit.prevent="spendeRegistrieren">
-                                   <!-- Two-Way Data-Binding (v-model): Verknüpft die Radio-Buttons mit der Variablen uebergabeArt. -->
+                                    <!-- Two-Way Data-Binding (v-model): Verknüpft die Radio-Buttons mit der Variable "uebergabeArt" -->
                                     <div class="mb-4 d-flex justify-content-center gap-3">
                                         <div>
-                                            <input type="radio" class="btn-check" id="uebergabe" value="uebergabe" v-model="uebergabeArt">
-                                            <label class="btn btn-outline-primary px-4 py-2" for="uebergabe">🏢 Übergabe an der Geschäftsstelle</label>
+                                            <input type="radio" class="btn-check" id="uebergabe" value="uebergabe"
+                                                v-model="uebergabeArt">
+                                            <label class="btn btn-outline-primary px-4 py-2" for="uebergabe">🏢 Übergabe
+                                                an der Geschäftsstelle</label>
                                         </div>
                                         <div>
-                                            <input type="radio" class="btn-check" id="abholung" value="abholung" v-model="uebergabeArt">
-                                            <label class="btn btn-outline-primary px-4 py-2" for="abholung">🚚 Abholung</label>
+                                            <input type="radio" class="btn-check" id="abholung" value="abholung"
+                                                v-model="uebergabeArt">
+                                            <label class="btn btn-outline-primary px-4 py-2" for="abholung">🚚
+                                                Abholung</label>
                                         </div>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="kleidung" class="form-label">Art der Kleidung</label>
-                                        <input type="text" class="form-control" id="kleidung" v-model="artDerKleidung" placeholder="z.B. 3 Winterjacken, 2 Paar Schuhe" required>
+                                        <input type="text" class="form-control" id="kleidung" v-model="artDerKleidung"
+                                            placeholder="z.B. 3 Winterjacken, 2 Paar Schuhe" required>
                                     </div>
 
                                     <div class="mb-3">
@@ -79,23 +108,28 @@
                                     <!-- Dynamische Anzeige: Dieser Adress-Block existiert nur, wenn Abholung gewählt ist. -->
                                     <div class="mb-3 p-3 bg-light border rounded" v-if="uebergabeArt === 'abholung'">
                                         <h5 class="mb-3">Adresse für das Sammelfahrzeug</h5>
-                                        
+
                                         <label for="adresse" class="form-label">Straße & Hausnummer</label>
-                                        <input type="text" class="form-control mb-2" id="adresse" v-model.trim="abholadresse" placeholder="Musterstraße 1" required>
-                                        
+                                        <input type="text" class="form-control mb-2" id="adresse"
+                                            v-model.trim="abholadresse" placeholder="Musterstraße 1" required>
+
                                         <!-- Dynamische CSS-Klassen für das grüne/rote Validierungs-Feedback. -->
                                         <label for="plz" class="form-label">Postleitzahl</label>
-                                        <input type="text" class="form-control" id="plz" v-model.trim="plz" placeholder="z.B. 12345" required maxlength="5"
-                                               :class="{'is-valid': istPlzGueltig === true, 'is-invalid': istPlzGueltig === false}">
+                                        <input type="text" class="form-control" id="plz" v-model.trim="plz"
+                                            placeholder="z.B. 12345" required maxlength="5"
+                                            :class="{'is-valid': istPlzGueltig === true, 'is-invalid': istPlzGueltig === false}">
 
                                         <div class="invalid-feedback">
-                                            Fehler: Die Postleitzahl muss aus genau 5 Ziffern bestehen und mit "12" beginnen.
+                                            Fehler: Die Postleitzahl muss aus genau 5 Ziffern bestehen und mit "12"
+                                            beginnen.
                                         </div>
                                     </div>
 
                                     <!-- Button deaktivieren, falls die PLZ-Bedingung nicht erfüllt ist. -->
                                     <div class="d-grid mt-4">
-                                        <button type="submit" class="btn btn-primary btn-lg" :disabled="uebergabeArt === 'abholung' && istPlzGueltig === false">Spende jetzt registrieren</button>
+                                        <button type="submit" class="btn btn-primary btn-lg"
+                                            :disabled="uebergabeArt === 'abholung' && istPlzGueltig === false">Spende
+                                            jetzt registrieren</button>
                                     </div>
 
                                 </form>
@@ -105,30 +139,36 @@
                             <!-- Barrierefreiheit (aria-live): Meldet dem Screenreader, dass sich der Text hier geändert hat. -->
                             <div v-else aria-live="polite">
                                 <div class="text-center mb-4">
-                                    <h2 class="text-success" ref="erfolgsMeldung" tabindex="-1">Vielen Dank für deine Spende! 🎉</h2>
-                                    <p class="text-muted">Deine Registrierung war erfolgreich. Hier sind deine Bestätigungsdaten:</p>
+                                    <h2 class="text-success" ref="erfolgsMeldung" tabindex="-1">Vielen Dank für deine
+                                        Spende! 🎉</h2>
+                                    <p class="text-muted">Deine Registrierung war erfolgreich. Hier sind deine
+                                        Bestätigungsdaten:</p>
                                 </div>
-                                
+
                                 <!-- Text-Interpolation: Gibt die in Vue gespeicherten Daten aus. -->
                                 <ul class="list-group mb-4 text-start shadow-sm">
                                     <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <span>👕 Art der Kleidung</span>
-                                        <span class="badge bg-primary rounded-pill fs-6 fw-normal">{{ artDerKleidung }}</span>
+                                        <span class="badge bg-primary rounded-pill fs-6 fw-normal">{{ artDerKleidung
+                                            }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <span>🌍 Krisengebiet</span>
-                                        <span class="badge bg-primary rounded-pill fs-6 fw-normal">{{ krisengebiet }}</span>
+                                        <span class="badge bg-primary rounded-pill fs-6 fw-normal">{{ krisengebiet
+                                            }}</span>
                                     </li>
                                     <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <span>🕒 Datum & Uhrzeit</span>
                                         <strong class="text-end ms-auto">{{ datumUhrzeit }}</strong>
                                     </li>
-                                    <li v-if="uebergabeArt === 'uebergabe'" class="list-group-item p-3 bg-light d-flex justify-content-between align-items-center">
+                                    <li v-if="uebergabeArt === 'uebergabe'"
+                                        class="list-group-item p-3 bg-light d-flex justify-content-between align-items-center">
                                         <span>📍 Ort der Übergabe: </span>
                                         <strong class="text-end ms-auto">Persönlich an der Geschäftsstelle</strong>
                                     </li>
-                                    
-                                    <li v-else class="list-group-item p-3 bg-light d-flex justify-content-between align-items-center">
+
+                                    <li v-else
+                                        class="list-group-item p-3 bg-light d-flex justify-content-between align-items-center">
                                         <span>📍 Sammelfahrzeug kommt nach: </span>
                                         <strong class="text-end ms-auto">{{ abholadresse }}, {{ plz }}</strong>
                                     </li>
@@ -140,8 +180,8 @@
                 </div>
             </div>
         </main>
-        
-        <!-- Sticky Footer: Sorgt dafür, dass der Footer am unteren Bildschirmrand bleibt. -->
+
+        <!-- Footer mit rechtlichen Hinweisen -->
         <footer class="bg-white border-top py-4 mt-auto">
             <div class="container text-center">
                 <ul class="nav justify-content-center border-bottom pb-3 mb-3">
@@ -176,17 +216,17 @@
 
             /**
              * 2. Berechnete Eigenschaften (Computed Properties).
-             * Prüft, ob die eingegebene PLZ (this.plz) mit "12" beginnt, wenn genau 5 Zahlen eingegeben wurden. 
+             * Validierungslogik: Wenn genau 5 Zahlen eingegeben wurden, wird die PLZ (this.plz) geprüft, ob Sie mit "12" beginnt.
              */
             computed: {
                 istPlzGueltig() {
-                    // Verhindert rotes Feedback, solange nicht exakt 5 Zeichen eingegeben wurden.
-                    if (this.plz.length !== 5) return null; 
+                    // Verhindert eine rote Fehlermeldung, solange nicht exakt 5 Zeichen eingegeben wurden.
+                    if (this.plz.length !== 5) return null;
                     // Prüft, ob Buchstaben eingetippt wurden.
                     if (isNaN(this.plz)) return false;
                     return this.plz.startsWith('12');
                 }
-            }, 
+            },
 
             /**
              * 3. Methoden für das Event-Handling (Benutzeraktionen).
@@ -196,11 +236,11 @@
                 spendeRegistrieren() {
                     // Generierung des Zeitstempels zum Zeitpunkt der Absendung des Formulars.
                     const jetzt = new Date();
-                    this.datumUhrzeit = jetzt.toLocaleString('de-DE'); 
-                    
+                    this.datumUhrzeit = jetzt.toLocaleString('de-DE');
+
                     // Formular ausblenden, Danke-Seite einblenden
                     this.formularGesendet = true;
-                    
+
                     // Wartet, bis Vue das DOM (die HTML-Struktur) fertig gerendert hat, und setzt den Fokus auf die neue Überschrift.
                     this.$nextTick(() => {
                         this.$refs.erfolgsMeldung.focus();
@@ -210,6 +250,7 @@
             }
         }).mount('#app') // Bindet (mountet) die Vue-Anwendung an das HTML-Element mit der ID "app".
     </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
