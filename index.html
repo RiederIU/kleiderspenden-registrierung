@@ -1,256 +1,636 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kleiderspenden-Registrierung</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <style>
-        /* Hover-Effekt für die Eingabefelder. */
-        .form-control:hover,
-        .form-select:hover {
-            border-color: #0d6efd;
-            box-shadow: 0 0 8px rgba(13, 110, 253, 0.25);
-            transition: all 0.3s ease-in-out;
+      /* Verbesserung der Usability: Visuelles Feedback (Hover-Status) zur besseren Orientierung bei interaktiven Formularelementen.*/
+      .form-control:hover,
+      .form-select:hover {
+        border-color: #0d6efd;
+        box-shadow: 0 0 8px rgba(13, 110, 253, 0.25);
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Responsive Anpassung:
+      Reduziert die Branding-Elemente, um den Umbruch des Hamburger-Buttons auf schmalen Viewports zu verhindern. */
+      .nav-logo {
+        height: 50px;
+        width: auto;
+      }
+
+      .nav-text {
+        font-size: 1.25rem;
+      }
+
+      /* Responsive Skalierung: 
+      Stellt die reguläre visuelle Gewichtung von Logo und Titel bei ausreichendem Platz (ab md-Breakpoint) wieder her.*/
+      @media (min-width: 768px) {
+        .nav-logo {
+          height: 80px;
         }
+
+        .nav-text {
+          font-size: 1.5rem;
+        }
+      }
+
+      /* Verhindert den standardmäßigen Browser-Rahmen 
+         bei Überschriften, die rein für Screenreader fokussiert werden. */
+      h2[tabindex="-1"]:focus {
+        outline: none;
+      }
     </style>
-</head>
+  </head>
 
-<body class="bg-light">
-
-    <!-- Layout-Basis (Flexbox): Sicherstellung, dass die App-Ansicht immer die volle Bildschirmhöhe nutzt. -->
+  <body class="bg-light">
+    <!-- Layout-Architektur (Sticky Footer):
+     Gewährleistet, dass der Footer stets am unteren Viewport-Rand fixiert bleibt. -->
     <div id="app" class="d-flex flex-column min-vh-100">
+      <header class="bg-white border-bottom shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light container py-3">
+          <a
+            class="navbar-brand d-flex align-items-center"
+            href="#"
+            @click.prevent="wechsleSeite('home')"
+          >
+            <img
+              src="logo.png"
+              alt="Kleiderspenden Logo"
+              class="nav-logo me-2 rounded"
+            />
+            <span class="nav-text fw-semibold text-dark"
+              >Kleiderspenden e.V.</span
+            >
+          </a>
 
-        <!-- Header mit globaler Navigation und Logo -->
-        <header class="bg-white border-bottom shadow-sm">
-            <nav class="navbar navbar-expand-md navbar-light container py-3">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#globaleNavigation"
+            aria-controls="globaleNavigation"
+            aria-expanded="false"
+            aria-label="Navigation umschalten"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-                <a class="navbar-brand d-flex align-items-center" href="index.html">
-                    <img src="logo.png" alt="Kleiderspenden Logo" width="120" height="100" class="me-3 rounded">
-                    <span class="fs-4 fw-semibold text-dark">Kleiderspenden e.V.</span>
-                </a>
+          <!-- Globale Navigation (SPA):
+           Ermöglicht den nahtlosen Wechsel der Inhaltsbereiche ohne Page-Reload und visualisiert den aktiven Navigationsstatus. -->
+          <div class="collapse navbar-collapse" id="globaleNavigation">
+            <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  :class="{ 'active': aktuelleSeite === 'home' }"
+                  href="#"
+                  @click.prevent="wechsleSeite('home')"
+                  >Startseite / Spenden</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  :class="{ 'active': aktuelleSeite === 'ueber-uns' }"
+                  href="#"
+                  @click.prevent="wechsleSeite('ueber-uns')"
+                  >Über uns</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  :class="{ 'active': aktuelleSeite === 'kontakt' }"
+                  href="#"
+                  @click.prevent="wechsleSeite('kontakt')"
+                  >Kontakt</a
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#globaleNavigation" aria-controls="globaleNavigation" aria-expanded="false"
-                    aria-label="Navigation umschalten">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="globaleNavigation">
-                    <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Startseite</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Spende registrieren</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Über uns</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Kontakt</a>
-                        </li>
-                    </ul>
-                </div>
-
-            </nav>
-        </header>
-
-        <!-- Dynamischer Platzhalter: Dehnt sich aus, um den Footer bei wenig Inhalt nach unten zu schieben. -->
-        <main class="container my-5 flex-grow-1">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-10 col-lg-10 col-xl-8">
-                    <div class="card shadow-sm">
-                        <div class="card-body p-4">
-
-                            <!-- Single-Page-Application (SPA) -->
-                            <!-- Bedingtes Rendering: Zeigt das Formular an, solange es nicht abgesendet wurde. -->
-                            <div v-if="!formularGesendet">
-                                <h2 class="card-title text-center mb-4">Registriere deine Spende</h2>
-                                <!-- Event-Handling: .prevent verhindert, dass die Seite beim Absenden neu lädt. -->
-                                <form @submit.prevent="spendeRegistrieren">
-                                    <!-- Two-Way Data-Binding (v-model): Verknüpft die Radio-Buttons mit der Variable "uebergabeArt" -->
-                                    <div class="mb-4 d-flex justify-content-center gap-3">
-                                        <div>
-                                            <input type="radio" class="btn-check" id="uebergabe" value="uebergabe"
-                                                v-model="uebergabeArt">
-                                            <label class="btn btn-outline-primary px-4 py-2" for="uebergabe">🏢 Übergabe
-                                                an der Geschäftsstelle</label>
-                                        </div>
-                                        <div>
-                                            <input type="radio" class="btn-check" id="abholung" value="abholung"
-                                                v-model="uebergabeArt">
-                                            <label class="btn btn-outline-primary px-4 py-2" for="abholung">🚚
-                                                Abholung</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="kleidung" class="form-label">Art der Kleidung</label>
-                                        <input type="text" class="form-control" id="kleidung" v-model="artDerKleidung"
-                                            placeholder="z.B. 3 Winterjacken, 2 Paar Schuhe" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="krisengebiet" class="form-label">Aktuelles Krisengebiet</label>
-                                        <select class="form-select" id="krisengebiet" v-model="krisengebiet" required>
-                                            <option value="" disabled>Bitte auswählen...</option>
-                                            <option value="Syrien">Syrien</option>
-                                            <option value="Ukraine">Ukraine</option>
-                                            <option value="Ostafrika">Ostafrika (Dürrehilfe)</option>
-                                        </select>
-                                    </div>
-
-                                    <!-- Dynamische Anzeige: Dieser Adress-Block existiert nur, wenn Abholung gewählt ist. -->
-                                    <div class="mb-3 p-3 bg-light border rounded" v-if="uebergabeArt === 'abholung'">
-                                        <h5 class="mb-3">Adresse für das Sammelfahrzeug</h5>
-
-                                        <label for="adresse" class="form-label">Straße & Hausnummer</label>
-                                        <input type="text" class="form-control mb-2" id="adresse"
-                                            v-model.trim="abholadresse" placeholder="Musterstraße 1" required>
-
-                                        <!-- Dynamische CSS-Klassen für das grüne/rote Validierungs-Feedback. -->
-                                        <label for="plz" class="form-label">Postleitzahl</label>
-                                        <input type="text" class="form-control" id="plz" v-model.trim="plz"
-                                            placeholder="z.B. 12345" required maxlength="5"
-                                            :class="{'is-valid': istPlzGueltig === true, 'is-invalid': istPlzGueltig === false}">
-
-                                        <div class="invalid-feedback">
-                                            Fehler: Die Postleitzahl muss aus genau 5 Ziffern bestehen und mit "12"
-                                            beginnen.
-                                        </div>
-                                    </div>
-
-                                    <!-- Button deaktivieren, falls die PLZ-Bedingung nicht erfüllt ist. -->
-                                    <div class="d-grid mt-4">
-                                        <button type="submit" class="btn btn-primary btn-lg"
-                                            :disabled="uebergabeArt === 'abholung' && istPlzGueltig === false">Spende
-                                            jetzt registrieren</button>
-                                    </div>
-
-                                </form>
-                            </div>
-
-                            <!-- Single-Page-Ansatz: Anzeige der Bestätigungsseite (Danke-Ansicht). -->
-                            <!-- Barrierefreiheit (aria-live): Meldet dem Screenreader, dass sich der Text hier geändert hat. -->
-                            <div v-else aria-live="polite">
-                                <div class="text-center mb-4">
-                                    <h2 class="text-success" ref="erfolgsMeldung" tabindex="-1">Vielen Dank für deine
-                                        Spende! 🎉</h2>
-                                    <p class="text-muted">Deine Registrierung war erfolgreich. Hier sind deine
-                                        Bestätigungsdaten:</p>
-                                </div>
-
-                                <!-- Text-Interpolation: Gibt die in Vue gespeicherten Daten aus. -->
-                                <ul class="list-group mb-4 text-start shadow-sm">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <span>👕 Art der Kleidung</span>
-                                        <span class="badge bg-primary rounded-pill fs-6 fw-normal">{{ artDerKleidung
-                                            }}</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <span>🌍 Krisengebiet</span>
-                                        <span class="badge bg-primary rounded-pill fs-6 fw-normal">{{ krisengebiet
-                                            }}</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <span>🕒 Datum & Uhrzeit</span>
-                                        <strong class="text-end ms-auto">{{ datumUhrzeit }}</strong>
-                                    </li>
-                                    <li v-if="uebergabeArt === 'uebergabe'"
-                                        class="list-group-item p-3 bg-light d-flex justify-content-between align-items-center">
-                                        <span>📍 Ort der Übergabe: </span>
-                                        <strong class="text-end ms-auto">Persönlich an der Geschäftsstelle</strong>
-                                    </li>
-
-                                    <li v-else
-                                        class="list-group-item p-3 bg-light d-flex justify-content-between align-items-center">
-                                        <span>📍 Sammelfahrzeug kommt nach: </span>
-                                        <strong class="text-end ms-auto">{{ abholadresse }}, {{ plz }}</strong>
-                                    </li>
-                                </ul>
-                            </div>
-
+      <!-- Dynamischer Inhaltsbereich:
+       Kapselt die wechselnden SPA-Views und nutzt den verbleibenden Viewport flexibel aus,
+       um das Sticky-Footer-Layout strukturell zu stützen. -->
+      <main class="container my-5 flex-grow-1">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-10 col-lg-10 col-xl-8">
+            <div class="card shadow-sm">
+              <div class="card-body p-4">
+                <!-- SPA-Routing (Hauptansicht):
+                 Rendert die Startseite inklusive des Spendenformulars in Abhängigkeit vom aktiven Routing-Status. -->
+                <div v-if="aktuelleSeite === 'home'">
+                  <!-- Bedingtes Rendering:
+                   Verbirgt das Formular nach erfolgreicher Validierung, um den Registrierungsprozess visuell und logisch abzuschließen. -->
+                  <div v-if="!formularGesendet">
+                    <h2 class="card-title text-center mb-4">
+                      Registriere deine Spende
+                    </h2>
+                    <!-- Clientseitige Formularverarbeitung:
+                     Verhindert das Neuladen beim Absenden (@submit.prevent),
+                     damit Vue die Formulardaten direkt clientseitig verarbeiten kann. -->
+                    <form @submit.prevent="spendeRegistrieren">
+                      <!-- Logistik-Steuerung:
+                       Die Auswahl steuert reaktiv die Sichtbarkeit der prozessabhängigen Folgefelder
+                       (z.B. Adressfeld für das Sammelfahrzeug). -->
+                      <div class="mb-4 d-flex justify-content-center gap-3">
+                        <div>
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            id="uebergabe"
+                            value="uebergabe"
+                            v-model="uebergabeArt"
+                          />
+                          <label
+                            class="btn btn-outline-primary px-4 py-2"
+                            for="uebergabe"
+                            >🏢 Übergabe an der Geschäftsstelle</label
+                          >
                         </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+                        <div>
+                          <input
+                            type="radio"
+                            class="btn-check"
+                            id="abholung"
+                            value="abholung"
+                            v-model="uebergabeArt"
+                          />
+                          <label
+                            class="btn btn-outline-primary px-4 py-2"
+                            for="abholung"
+                            >🚚 Abholung</label
+                          >
+                        </div>
+                      </div>
 
-        <!-- Footer mit rechtlichen Hinweisen -->
-        <footer class="bg-white border-top py-4 mt-auto">
-            <div class="container text-center">
-                <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Impressum</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Datenschutz</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">AGB</a></li>
-                </ul>
-                <p class="text-muted mb-0">&copy; 2026 Kleiderspenden e.V.</p>
+                      <div class="mb-3">
+                        <label for="kleidung" class="form-label"
+                          >Art der Kleidung</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="kleidung"
+                          v-model="artDerKleidung"
+                          placeholder="z.B. 3 Winterjacken, 2 Paar Schuhe"
+                          required
+                        />
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="krisengebiet" class="form-label"
+                          >Aktuelles Krisengebiet</label
+                        >
+                        <select
+                          class="form-select"
+                          id="krisengebiet"
+                          v-model="krisengebiet"
+                          required
+                        >
+                          <option value="" disabled>Bitte auswählen...</option>
+                          <option value="Syrien">Syrien</option>
+                          <option value="Ukraine">Ukraine</option>
+                          <option value="Ostafrika">
+                            Ostafrika (Dürrehilfe)
+                          </option>
+                        </select>
+                      </div>
+
+                      <!-- Dynamische Formularstruktur:
+                       Erfragt die Abholadresse nur dann, wenn vom Nutzer explizit ein Sammelfahrzeug angefordert wurde. -->
+                      <div
+                        class="mb-3 p-3 bg-light border rounded"
+                        v-if="uebergabeArt === 'abholung'"
+                      >
+                        <h5 class="mb-3">Adresse für das Sammelfahrzeug</h5>
+
+                        <label for="adresse" class="form-label"
+                          >Straße & Hausnummer</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control mb-2"
+                          id="adresse"
+                          v-model.trim="abholadresse"
+                          placeholder="Musterstraße 1"
+                          required
+                        />
+
+                        <!-- Reaktive Validierungsschnittstelle:
+                         Transformiert das UI-Design basierend auf dem Validierungszustand der Postleitzahl,
+                         um Fehleingaben intuitiv zu signalisieren. -->
+                        <label for="plz" class="form-label">Postleitzahl</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="plz"
+                          v-model.trim="plz"
+                          placeholder="z.B. 12345"
+                          required
+                          maxlength="5"
+                          :class="{'is-valid': istPlzGueltig === true, 'is-invalid': istPlzGueltig === false}"
+                        />
+
+                        <div class="invalid-feedback">
+                          Fehler: Die Postleitzahl muss aus genau 5 Ziffern
+                          bestehen und mit "12" beginnen.
+                        </div>
+                      </div>
+
+                      <!-- Integritätssicherung des Registrierungsprozesses:
+                       Deaktiviert die finale Interaktion,
+                       bis alle logistischen Voraussetzungen (PLZ-Validierung bei Abholung) erfüllt sind. -->
+                      <div class="d-grid mt-4">
+                        <button
+                          type="submit"
+                          class="btn btn-primary btn-lg"
+                          :disabled="uebergabeArt === 'abholung' && istPlzGueltig !== true"
+                        >
+                          Spende jetzt registrieren
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+
+                  <!-- Transaktionsbestätigung (Barrierefreiheit):
+                   Aktiviert die Bestätigungsansicht und nutzt das aria-live-Attribut,
+                   um den Screenreader automatisch über den erfolgreichen Abschluss zu informieren. -->
+                  <div v-else aria-live="polite">
+                    <div class="text-center mb-4">
+                      <h2
+                        class="text-success"
+                        ref="erfolgsMeldung"
+                        tabindex="-1"
+                      >
+                        Vielen Dank für deine Spende! 🎉
+                      </h2>
+                      <p class="text-muted">
+                        Deine Registrierung war erfolgreich. Hier sind deine
+                        Bestätigungsdaten:
+                      </p>
+                    </div>
+
+                    <!-- Daten-Präsentation:
+                     Spiegelt die erfassten Formulardaten aus dem reaktiven State in die finale Zusammenfassungsansicht. -->
+                    <ul class="list-group mb-4 text-start shadow-sm">
+                      <li
+                        class="list-group-item d-flex justify-content-between align-items-center p-3"
+                      >
+                        <span>👕 Art der Kleidung</span>
+                        <span
+                          class="badge bg-primary rounded-pill fs-6 fw-normal"
+                          >{{ artDerKleidung }}</span
+                        >
+                      </li>
+                      <li
+                        class="list-group-item d-flex justify-content-between align-items-center p-3"
+                      >
+                        <span>🌍 Krisengebiet</span>
+                        <span
+                          class="badge bg-primary rounded-pill fs-6 fw-normal"
+                          >{{ krisengebiet }}</span
+                        >
+                      </li>
+                      <li
+                        class="list-group-item d-flex justify-content-between align-items-center p-3"
+                      >
+                        <span>🕒 Datum & Uhrzeit</span>
+                        <strong class="text-end ms-auto"
+                          >{{ datumUhrzeit }}</strong
+                        >
+                      </li>
+                      <li
+                        v-if="uebergabeArt === 'uebergabe'"
+                        class="list-group-item p-3 bg-light d-flex justify-content-between align-items-center"
+                      >
+                        <span>📍 Ort der Übergabe: </span>
+                        <strong class="text-end ms-auto"
+                          >Persönlich an der Geschäftsstelle</strong
+                        >
+                      </li>
+
+                      <li
+                        v-else
+                        class="list-group-item p-3 bg-light d-flex justify-content-between align-items-center"
+                      >
+                        <span>📍 Sammelfahrzeug kommt nach: </span>
+                        <strong class="text-end ms-auto"
+                          >{{ abholadresse }}, {{ plz }}</strong
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Ergänzende Inhaltsbereiche:
+                 Rendert die weiteren Informationsseiten (wie Impressum und Kontakt) basierend auf der aktiven Navigation.-->
+                <div v-else-if="aktuelleSeite === 'impressum'">
+                  <h2 class="card-title mb-4">Impressum</h2>
+                  <p><strong>Angaben gemäß § 5 TMG:</strong></p>
+                  <p>
+                    Kleiderspenden e.V.<br />Musterstraße 42<br />12345
+                    Musterstadt
+                  </p>
+                  <p>
+                    <strong>Vertreten durch:</strong><br />Max Mustermann
+                    (Vorstandsvorsitzender)
+                  </p>
+                  <p>
+                    <strong>Kontakt:</strong><br />Telefon: 01234 / 56789<br />E-Mail:
+                    kontakt@kleiderspenden-ev-beispiel.de
+                  </p>
+                  <hr class="my-4" />
+                  <p class="text-muted small">
+                    <em
+                      >Quelle: Dieser fiktive Text wurde für die Fallstudie am
+                      05.03.2026 durch KI (Google Gemini) als exemplarisches
+                      Impressum generiert.</em
+                    >
+                  </p>
+                </div>
+
+                <div v-else-if="aktuelleSeite === 'datenschutz'">
+                  <h2 class="card-title mb-4">Datenschutzerklärung</h2>
+                  <h5>1. Datenschutz auf einen Blick</h5>
+                  <p>
+                    Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst.
+                    Wir behandeln Ihre personenbezogenen Daten vertraulich und
+                    entsprechend der gesetzlichen Datenschutzvorschriften sowie
+                    dieser Datenschutzerklärung.
+                  </p>
+                  <h5>2. Datenerfassung auf dieser Website</h5>
+                  <p>
+                    <strong>Welche Daten erfassen wir?</strong><br />Für die
+                    Registrierung einer Spende erfassen wir die Art der
+                    Kleidung, das Krisengebiet sowie bei einer Abholung Ihre
+                    Adresse (Straße, Hausnummer, Postleitzahl). Diese Daten
+                    werden ausschließlich zur Abwicklung Ihrer Kleiderspende
+                    genutzt.
+                  </p>
+                  <h5>3. Kontaktformular / Spendenregistrierung</h5>
+                  <p>
+                    Wenn Sie uns per Formular Spendenregistrierungen zukommen
+                    lassen, werden Ihre Angaben aus dem Formular inklusive der
+                    von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung
+                    der Spende und für den Fall von Anschlussfragen bei uns
+                    gespeichert. Diese Daten geben wir nicht ohne Ihre
+                    Einwilligung weiter.
+                  </p>
+                  <hr class="my-4" />
+                  <p class="text-muted small">
+                    <em
+                      >Quelle: Dieser fiktive Text wurde für die Fallstudie am
+                      05.03.2026 durch KI (Google Gemini) als exemplarische
+                      Datenschutzerklärung generiert.</em
+                    >
+                  </p>
+                </div>
+
+                <div v-else-if="aktuelleSeite === 'agb'">
+                  <h2 class="card-title mb-4">
+                    Allgemeine Geschäftsbedingungen (AGB)
+                  </h2>
+
+                  <h5>1. Geltungsbereich</h5>
+                  <p>
+                    Diese Allgemeinen Geschäftsbedingungen gelten für alle über
+                    diese Webseite registrierten Spenden an den Kleiderspenden
+                    e.V. Abweichende Bedingungen des Spenders werden nicht
+                    anerkannt.
+                  </p>
+
+                  <h5>2. Spendenübergabe und Eigentumsübergang</h5>
+                  <p>
+                    Mit der physischen Übergabe der Kleiderspende (entweder an
+                    der Geschäftsstelle oder an das Sammelfahrzeug) geht das
+                    Eigentum an den gespendeten Gegenständen auf den
+                    Kleiderspenden e.V. über. Der Verein behält sich vor, stark
+                    beschädigte oder verschmutzte Kleidung nicht anzunehmen.
+                  </p>
+
+                  <h5>3. Haftung</h5>
+                  <p>
+                    Der Kleiderspenden e.V. haftet nur für Vorsatz und grobe
+                    Fahrlässigkeit. Für Sach- oder Vermögensschäden, die bei der
+                    Abholung durch das Sammelfahrzeug auf dem Grundstück des
+                    Spenders entstehen, haftet der Verein im Rahmen der
+                    gesetzlichen Bestimmungen.
+                  </p>
+
+                  <hr class="my-4" />
+                  <p class="text-muted small">
+                    <em
+                      >Quelle: Dieser fiktive Text wurde für die Fallstudie am
+                      05.03.2026 durch KI (Google Gemini) als exemplarische AGB
+                      generiert.</em
+                    >
+                  </p>
+                </div>
+
+                <div v-else-if="aktuelleSeite === 'ueber-uns'">
+                  <h2 class="card-title mb-4">Über uns</h2>
+                  <p>
+                    Willkommen beim Kleiderspenden e.V.! Wir sind eine
+                    gemeinnützige Organisation, die es sich zur Aufgabe gemacht
+                    hat, gut erhaltene Kleidung dorthin zu bringen, wo sie am
+                    dringendsten benötigt wird.
+                  </p>
+                  <p>
+                    Seit unserer Gründung arbeiten wir eng mit internationalen
+                    Hilfsorganisationen zusammen, um Krisengebiete wie Syrien,
+                    die Ukraine und Ostafrika schnell und unbürokratisch zu
+                    unterstützen. Jedes Kleidungsstück, das Sie über unsere
+                    Plattform registrieren, wird von ehrenamtlichen Helfern
+                    sortiert und auf den Weg gebracht.
+                  </p>
+                  <p>
+                    Vielen Dank, dass Sie Teil unserer Mission sind und mit
+                    Ihrer Spende Wärme und Hoffnung spenden!
+                  </p>
+                  <hr class="my-4" />
+                  <p class="text-muted small">
+                    <em
+                      >Quelle: Dieser fiktive Text wurde für die Fallstudie am
+                      05.03.2026 durch KI (Google Gemini) als exemplarischer
+                      "Über uns"-Text generiert.</em
+                    >
+                  </p>
+                </div>
+
+                <div v-else-if="aktuelleSeite === 'kontakt'">
+                  <h2 class="card-title mb-4">Kontakt</h2>
+                  <p>
+                    Haben Sie Fragen zu Ihrer Spende, zum Ablauf der Abholung
+                    oder möchten Sie sich ehrenamtlich bei uns engagieren? Wir
+                    freuen uns über Ihre Nachricht!
+                  </p>
+                  <div class="row mt-4">
+                    <div class="col-md-6 mb-3">
+                      <h5>📍 Geschäftsstelle</h5>
+                      <p>
+                        Kleiderspenden e.V.<br />Musterstraße 42<br />12345
+                        Musterstadt
+                      </p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <h5>📞 Erreichbarkeit</h5>
+                      <p>
+                        <strong>Telefon:</strong> 01234 / 56789<br />(Mo-Fr:
+                        09:00 - 17:00 Uhr)<br /><strong>E-Mail:</strong>
+                        kontakt@kleiderspenden-ev-beispiel.de
+                      </p>
+                    </div>
+                  </div>
+                  <hr class="my-4" />
+                  <p class="text-muted small">
+                    <em
+                      >Quelle: Dieser fiktive Text wurde für die Fallstudie am
+                      05.03.2026 durch KI (Google Gemini) als exemplarischer
+                      Kontakt-Text generiert.</em
+                    >
+                  </p>
+                </div>
+              </div>
             </div>
-        </footer>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer-Bereich: Enthält die rechtlichen Hinweise sowie den geforderten Quellennachweis für generierte Inhalte.-->
+      <footer class="bg-white border-top py-4 mt-auto">
+        <div class="container text-center">
+          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link px-2 text-muted"
+                @click.prevent="wechsleSeite('impressum')"
+                >Impressum</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link px-2 text-muted"
+                @click.prevent="wechsleSeite('datenschutz')"
+                >Datenschutz</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link px-2 text-muted"
+                @click.prevent="wechsleSeite('agb')"
+                >AGB</a
+              >
+            </li>
+          </ul>
+          <p class="text-muted mb-0">&copy; 2026 Kleiderspenden e.V.</p>
+          <p class="text-muted small mt-1 mb-0">
+            <em>
+              Das Logo dieser Webseite wurde für die Fallstudie am 05.03.2026
+              durch KI (Google Gemini) generiert.
+            </em>
+          </p>
+        </div>
+      </footer>
     </div>
 
     <script>
-        const { createApp } = Vue
+      const { createApp } = Vue;
 
-        createApp({
-            /**
-             * 1. Reaktiver Zustand (State) der Anwendung.
-             * Initialisierung der Variablen, welche sich zur Laufzeit ändern können.
-            */
-            data() {
-                return {
-                    uebergabeArt: 'uebergabe', // Speichert, ob "Übergabe" oder "Abholung" gewählt wurde.
-                    artDerKleidung: '',
-                    krisengebiet: '',
-                    abholadresse: '',
-                    plz: '',
-                    formularGesendet: false,
-                    datumUhrzeit: ''
-                }
-            },
+      createApp({
+        /**
+         * Zentraler Anwendungszustand (State).
+         * Verwaltet die Datenbasis für das reaktive SPA-Routing und speichert alle Nutzereingaben temporär zur Laufzeit.
+         */
+        data() {
+          return {
+            aktuelleSeite: "home", // Routing-Status: Definiert den aktuell sichtbaren Inhaltsbereich für die dynamische View-Steuerung.
+            uebergabeArt: "uebergabe", // Evaluiert reaktiv, ob zusätzliche Adressfelder für das Sammelfahrzeug benötigt werden.
+            artDerKleidung: "",
+            krisengebiet: "",
+            abholadresse: "",
+            plz: "",
+            formularGesendet: false, // Überführt die Webanwendung nach erfolgreicher Spende in die finale Bestätigungsansicht.
+            datumUhrzeit: "",
+          };
+        },
 
-            /**
-             * 2. Berechnete Eigenschaften (Computed Properties).
-             * Validierungslogik: Wenn genau 5 Zahlen eingegeben wurden, wird die PLZ (this.plz) geprüft, ob Sie mit "12" beginnt.
-             */
-            computed: {
-                istPlzGueltig() {
-                    // Verhindert eine rote Fehlermeldung, solange nicht exakt 5 Zeichen eingegeben wurden.
-                    if (this.plz.length !== 5) return null;
-                    // Prüft, ob Buchstaben eingetippt wurden.
-                    if (isNaN(this.plz)) return false;
-                    return this.plz.startsWith('12');
-                }
-            },
+        /**
+         * Berechnete Eigenschaften (Computed Properties):
+         * Realisiert die automatisierte Validierung der Geschäftsregeln (PLZ-Prüfung) in Abhängigkeit vom Eingabestatus. */
+        computed: {
+          istPlzGueltig() {
+            // Unterdrückt temporär das negative Validierungs-Feedback,bis die Eingabelänge die formale Anforderung (5 Ziffern) erfüllt.
+            if (this.plz.length !== 5) return null;
+            // Typprüfung: Evaluiert die Eingabe auf eine rein numerische Zeichenfolge,
+            // um logistische Fehler bei der Adresserfassung zu unterbinden.
+            if (isNaN(this.plz)) return false;
+            // Prüft, ob die PLZ im Einzugsgebiet des Vereins liegt (Präfix "12")
+            return this.plz.startsWith("12");
+          },
+        },
 
-            /**
-             * 3. Methoden für das Event-Handling (Benutzeraktionen).
-             * Funktionen, die beim Absenden des Formulars ausgeführt werden.
-             */
-            methods: {
-                spendeRegistrieren() {
-                    // Generierung des Zeitstempels zum Zeitpunkt der Absendung des Formulars.
-                    const jetzt = new Date();
-                    this.datumUhrzeit = jetzt.toLocaleString('de-DE');
+        /**
+         * Clientseitige Prozesssteuerung (Methods):
+         * Steuert die interaktiven Abläufe der Webanwendung von der Navigation bis zum Abschluss der Spende.
+         */
+        methods: {
+          // Clientseitiges SPA-Routing: Steuert den virtuellen Seitenwechsel durch die gezielte Änderung des Routing-Status.
+          wechsleSeite(zielSeite) {
+            this.aktuelleSeite = zielSeite;
+            // Viewport-Reset: Setzt die Scroll-Position nach einem View-Wechsel zurück,
+            // um das Navigationsverhalten einer klassischen Webseite zu emulieren.
+            window.scrollTo(0, 0);
 
-                    // Formular ausblenden, Danke-Seite einblenden
-                    this.formularGesendet = true;
+            // Accessibility-Fokus-Management:
+            // Setzt den Screenreader-Fokus nach dem dynamischen View-Wechsel (SPA) über DOM-Traversierung
+            // gezielt auf das neue Hauptinhaltselement (h2).
+            this.$nextTick(() => {
+              const neueUeberschrift = document.querySelector("main h2");
+              if (neueUeberschrift) {
+                neueUeberschrift.setAttribute("tabindex", "-1");
+                neueUeberschrift.focus();
+              }
+            });
+          },
 
-                    // Wartet, bis Vue das DOM (die HTML-Struktur) fertig gerendert hat, und setzt den Fokus auf die neue Überschrift.
-                    this.$nextTick(() => {
-                        this.$refs.erfolgsMeldung.focus();
-                    });
+          spendeRegistrieren() {
+            // Erzeugt einen lokalisierten Zeitstempel zum Zeitpunkt der Absendung des Formulars.
+            const jetzt = new Date();
+            this.datumUhrzeit = jetzt.toLocaleString("de-DE");
 
-                }
-            }
-        }).mount('#app') // Bindet (mountet) die Vue-Anwendung an das HTML-Element mit der ID "app".
+            // Aktualisiert den Transaktionsstatus, um die finale Bestätigungsansicht zu rendern.
+            this.formularGesendet = true;
+
+            // Asynchrone DOM-Aktualisierung:
+            // Verzögert die Fokus-Setzung bis zum Abschluss des Vue-Render-Zyklus, um sicherzustellen, dass das Ziel-Element existiert.
+            this.$nextTick(() => {
+              this.$refs.erfolgsMeldung.focus();
+            });
+          },
+        },
+      }).mount("#app"); // Initialisiert die Vue-Instanz und verknüpft sie mit dem HTML-Container (id="app").
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
