@@ -4,26 +4,26 @@ Entwickelt für die Fallstudie des fiktiven Kleiderspenden e.V.
 
 ## Umgesetzte Funktionen
 ### 1. Kernfunktionen & SPA-Architektur
-* ** SPA-Routing: Clientseitige Navigation implementiert. Die Menü-Links führen nun zu dynamischen Unterseiten ohne Neuladen der Seite.
-* ** Informationsseiten: 5 vollständige Unterseiten (Über uns, Kontakt, Impressum, Datenschutz, AGB) mit transparenten Quellennachweisen für KI-generierte Inhalte.
-* ** Globale Navigation: Eine übersichtliche Kopfzeile mit lokal eingebundenem Logo, das als funktionaler Home-Button dient, sowie eine dynamische Menü-Markierung zur Orientierung.
-* ** Spendenformular: Erfassung von Spendenart, Krisengebiet und Übergabeart (Geschäftsstelle oder Abholung)
-* ** Bestätigungsansicht: Übersichtliche Zusammenfassung aller erfassten Daten mit Zeitstempel nach erfolgreicher Registrierung
-* ** Echtzeit-Validierung: Das Formular prüft bei der Eingabe automatisch, ob die Postleitzahl für das Sammelfahrzeug aus genau 5 Ziffern besteht und mit "12" beginnt. Der Absende-Button wird bei ungültiger Eingabe gesperrt.
+* **SPA-Routing:** Clientseitige Navigation implementiert. Die Menü-Links führen nun zu dynamischen Unterseiten ohne Neuladen der Seite.
+* **Informationsseiten:** 5 vollständige Unterseiten (Über uns, Kontakt, Impressum, Datenschutz, AGB) mit transparenten Quellennachweisen für KI-generierte Inhalte.
+* **Globale Navigation:** Eine übersichtliche Kopfzeile mit lokal eingebundenem Logo, das als funktionaler Home-Button dient, sowie eine dynamische Menü-Markierung zur Orientierung.
+* **Spendenformular:** Erfassung von Spendenart, Krisengebiet und Übergabeart (Geschäftsstelle oder Abholung)
+* **Bestätigungsansicht:** Übersichtliche Zusammenfassung aller erfassten Daten mit Zeitstempel nach erfolgreicher Registrierung
+* **Echtzeit-Validierung:** Das Formular prüft bei der Eingabe automatisch, ob die Postleitzahl für das Sammelfahrzeug aus genau 5 Ziffern besteht und mit "12" beginnt. Der Absende-Button wird bei ungültiger Eingabe gesperrt.
 
 ### 2. Barrierefreiheit (Accessibility & Usability)
-* ** Screenreader-Unterstützung: Automatisches Fokus-Management bei der Bestätigungsansicht und beim Seitenwechsel für eine verbesserte Zugänglichkeit.
-* ** Auto-Scroll (Viewport-Reset): Die Seite scrollt beim Wechseln der Unterseiten automatisch nach oben, um das Navigationsverhalten einer klassischen Webseite zu emulieren.
-* ** Visuelles Feedback: Hover-Effekte bei Formularelementen zur besseren Orientierung.
+* **Screenreader-Unterstützung:** Automatisches Fokus-Management bei der Bestätigungsansicht und beim Seitenwechsel für eine verbesserte Zugänglichkeit.
+* **Auto-Scroll (Viewport-Reset):** Die Seite scrollt beim Wechseln der Unterseiten automatisch nach oben, um das Navigationsverhalten einer klassischen Webseite zu emulieren.
+* **Visuelles Feedback:** Hover-Effekte bei Formularelementen zur besseren Orientierung.
 
 ### 3. Responsive Design
-* ** Mobile Optimierung: Logo-Größe und Vereinsname werden auf Mobilgeräten verkleinert, damit das Hamburger-Menü nicht mehr in die nächste Zeile umbricht.
-* ** Flexibles Layout: Die Benutzeroberfläche passt sich mithilfe von CSS-Flexbox und Bootstrap automatisch an alle Bildschirmgrößen an. Dies umfasst einen Sticky Footer für ein sauberes Layout bei kurzen Inhalten.
+* **Mobile Optimierung:** Logo-Größe und Vereinsname werden auf Mobilgeräten verkleinert, damit das Hamburger-Menü nicht mehr in die nächste Zeile umbricht.
+* **Flexibles Layout:** Die Benutzeroberfläche passt sich mithilfe von CSS-Flexbox und Bootstrap automatisch an alle Bildschirmgrößen an. Dies umfasst einen Sticky Footer für ein sauberes Layout bei kurzen Inhalten.
 
 ### 4. Sicherheit & Code-Qualität
-* ** IT-Sicherheit (SRI-Hashes): Das Bootstrap-Framework ist mit Subresource Integrity (SRI) abgesichert, um die Manipulation von CDN-Ressourcen zu verhindern.
-* ** Robuste Validierung: Button-Sperre berücksichtigt alle Validierungszustände (null, false, true).
-* ** Dokumentation: Vollständige Überarbeitung der Code-Kommentare mit Fokus auf Architektur und Geschäftslogik statt reiner Code-Übersetzung.
+* **IT-Sicherheit (SRI-Hashes):** Das Bootstrap-Framework ist mit Subresource Integrity (SRI) abgesichert, um die Manipulation von CDN-Ressourcen zu verhindern.
+* **Robuste Validierung:** Button-Sperre berücksichtigt alle Validierungszustände (null, false, true).
+* **Dokumentation:** Vollständige Überarbeitung der Code-Kommentare mit Fokus auf Architektur und Geschäftslogik statt reiner Code-Übersetzung.
 
 ## Verwendete Technologien
 * HTML5 / CSS3
